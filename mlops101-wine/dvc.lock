@@ -1,0 +1,66 @@
+schema: '2.0'
+stages:
+  load_data:
+    cmd: python src/load_data.py --config_path=params.yaml
+    deps:
+    - path: src/get_data.py
+      md5: 1fca8b3a958ad94b69ee007c9644424b
+      size: 652
+    - path: src/load_data.py
+      md5: cd1959e7471b8dec238de68728467038
+      size: 667
+    - path: wine_quality.csv
+      md5: 6a883fd98624e18c0b7ce251f4fab4fb
+      size: 100951
+    outs:
+    - path: data/raw/winequality.csv
+      md5: b81c95040ccc1f04820095a237ba3c61
+      size: 93485
+  split_data:
+    cmd: python src/split_data.py --config_path=params.yaml
+    deps:
+    - path: data/raw/winequality.csv
+      md5: b81c95040ccc1f04820095a237ba3c61
+      size: 93485
+    - path: src/split_data.py
+      md5: b663c39ea0cfcaffd75841c6ab9435c7
+      size: 1147
+    outs:
+    - path: data/processed/test_winequality.csv
+      md5: 420389d6fcceeb7da1311c6b14af875f
+      size: 18836
+    - path: data/processed/train_winequality.csv
+      md5: eb194c439f11a763691ae2f66e305d74
+      size: 74795
+  train_and_evaluate:
+    cmd: python src/train_and_evaluate.py --config_path=params.yaml
+    deps:
+    - path: data/processed/test_winequality.csv
+      md5: 420389d6fcceeb7da1311c6b14af875f
+      size: 18836
+    - path: data/processed/train_winequality.csv
+      md5: eb194c439f11a763691ae2f66e305d74
+      size: 74795
+    - path: src/train_and_evaluate.py
+      md5: 739519171258c6b30b0af9e98d78b3ba
+      size: 4084
+    params:
+      params.yaml:
+        estimators.ElasticNet.params.alpha: 0.55
+        estimators.ElasticNet.params.l1_ratio: 0.55
+    outs:
+    - path: models/model.joblib
+      md5: f84bfd139bd2d32cc0f6914db83ea779
+      size: 1198
+    - path: reports/scores.json
+      md5: d7981522b45c9dcfa8ce64f86ef567b4
+      size: 96
+  tag_models:
+    cmd: python src/tag_models.py --config_path=params.yaml
+    deps:
+    - path: models/model.joblib
+      md5: f84bfd139bd2d32cc0f6914db83ea779
+      size: 1198
+    - path: src/tag_models.py
+      md5: c976aae42fb5a1954c7fb5bd27344002
+      size: 2460

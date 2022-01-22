@@ -1,0 +1,34 @@
+stages:
+  stage_feature_extraction:
+    cmd: python src/featurization.py
+    deps:
+    - data/iris.csv
+    - src/featurization.py
+    outs:
+    - data/iris_featurized.csv
+  stage_split_dataset:
+    cmd: python src/split_dataset.py
+    deps:
+    - data/iris_featurized.csv
+    - src/split_dataset.py
+    params:
+    - stage_split_dataset.test_size
+    outs:
+    - data/test.csv
+    - data/train.csv
+  stage_train:
+    cmd: python src/train.py
+    deps:
+    - data/train.csv
+    - src/train.py
+    outs:
+    - data/model.joblib
+  stage_evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - data/model.joblib
+    - data/test.csv
+    - src/evaluate.py
+    - src/train.py
+    metrics:
+    - data/eval.txt

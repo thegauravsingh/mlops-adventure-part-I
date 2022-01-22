@@ -1,0 +1,6 @@
+base: 
+  project: mlops105-jupyter-dvc-mlflow
+  random_state: 42
+
+stage_split_dataset:
+  test_size: 0.4

@@ -1,0 +1,15 @@
+artifact_uri: file:///workspace/dvc-mlflow/mlruns/0/023bc2f559c94afab530b73f3cf45025/artifacts
+end_time: 1637584674685
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+name: ''
+run_id: 023bc2f559c94afab530b73f3cf45025
+run_uuid: 023bc2f559c94afab530b73f3cf45025
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1637584672319
+status: 3
+tags: []
+user_id: vscode

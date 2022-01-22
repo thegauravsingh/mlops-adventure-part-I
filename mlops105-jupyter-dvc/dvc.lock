@@ -1,0 +1,66 @@
+schema: '2.0'
+stages:
+  stage_feature_extraction:
+    cmd: python src/featurization.py
+    deps:
+    - path: data/iris.csv
+      md5: 57fce90c81521889c736445f058c4838
+      size: 3716
+    - path: src/featurization.py
+      md5: ab56a80d6d099f393c29577d0287be0b
+      size: 515
+    outs:
+    - path: data/iris_featurized.csv
+      md5: 04ed69383af337e9dabf934cbc8abc11
+      size: 3858
+  stage_split_dataset:
+    cmd: python src/split_dataset.py
+    deps:
+    - path: data/iris_featurized.csv
+      md5: 04ed69383af337e9dabf934cbc8abc11
+      size: 3858
+    - path: src/split_dataset.py
+      md5: 56d22ee04b06fec9bc7df2fffcb09069
+      size: 762
+    params:
+      params.yaml:
+        stage_split_dataset.test_size: 0.4
+    outs:
+    - path: data/test.csv
+      md5: 70761fd17dddfe17700d6ce054cea64a
+      size: 1568
+    - path: data/train.csv
+      md5: 95665495f9e69588c7614e067a536a48
+      size: 2348
+  stage_train:
+    cmd: python src/train.py
+    deps:
+    - path: data/train.csv
+      md5: 95665495f9e69588c7614e067a536a48
+      size: 2348
+    - path: src/train.py
+      md5: 6d60af06b8671716834b042bcd7a2a84
+      size: 663
+    outs:
+    - path: data/model.joblib
+      md5: 3c482b8b8fc996c7c0a225802e3363f8
+      size: 1272
+  stage_evaluate:
+    cmd: python src/evaluate.py
+    deps:
+    - path: data/model.joblib
+      md5: 3c482b8b8fc996c7c0a225802e3363f8
+      size: 1272
+    - path: data/test.csv
+      md5: 70761fd17dddfe17700d6ce054cea64a
+      size: 1568
+    - path: src/evaluate.py
+      md5: 52e5d5e66b9f8c8063e823139338d189
+      size: 900
+    - path: src/train.py
+      md5: 6d60af06b8671716834b042bcd7a2a84
+      size: 663
+    outs:
+    - path: data/eval.txt
+      md5: 1f7764d988d8d251dc3e9b1c5419f58b
+      size: 152

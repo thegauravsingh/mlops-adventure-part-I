@@ -1,0 +1,40 @@
+base: 
+  project: mlops101-wine
+  random_state: 42
+  target_col: quality
+
+data_source:
+  s3_source: wine_quality.csv
+
+load_data:
+  raw_dataset_csv: data/raw/winequality.csv
+
+split_data:
+  train_data_csv: data/processed/train_winequality.csv
+  test_data_csv: data/processed/test_winequality.csv
+  test_size: 0.2
+
+estimators:
+  ElasticNet:
+    params:
+      #alpha: 0.88
+      #l1_ratio: 0.89
+      #alpha: 0.9
+      #l1_ratio: 0.4
+      alpha: 0.55
+      l1_ratio: 0.55
+model_dir: models
+
+reports:
+  params: reports/params.json
+  scores: reports/scores.json
+
+webapp_model_dir: prediction_service/model/model.joblib
+
+mlflow_config:
+  artifacts_dir: artifacts
+  experiment_name: ElasticNet regression
+  run_nane: mlops
+  registered_model: ElasticNetWineModel
+  remote_server_uri: http://127.0.0.1:1234 
+
