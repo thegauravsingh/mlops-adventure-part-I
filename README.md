@@ -1,1 +1,1 @@
-# Adventures in mlops Part I
+# Adventures in MLOps Part I
